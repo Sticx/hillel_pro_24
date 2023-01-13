@@ -1,78 +1,114 @@
 class FormElement {
-    constructor(name, type, value) {
+    constructor({ name, type, value }) {
         this.name = name;
         this.type = type;
         this.value = value;
     }
-
     showName() {
         console.log(`Name: ${this.name}`);
     }
-
     getValue() {
         return this.value;
     }
 }
 
-class TextElement extends FormElement {
-    constructor({name, type, value, placeholder}) {
+class CreateTextElement extends FormElement {
+    constructor({ placeholder, name, type, value }) {
         super(name, type, value);
         this.placeholder = placeholder;
+        this.type = type;
+        this.name = name;
     }
-
-    createTextInput() {
+    createInput() {
         this.element = document.createElement("input");
-        this.element.setAttribute("name", this.name);
         this.element.setAttribute("type", this.type);
+        this.element.setAttribute("name", this.name);
         this.element.setAttribute("placeholder", this.placeholder);
         this.element.addEventListener("change", () => {
             this.value = this.element.value;
-        })
+        });
     }
 }
 
-const newTextInput = new TextElement({
-    name: "userName",
-    type: "text",
-    placeholder: "Your name"
-})
-newTextInput.createTextInput();
-document.querySelector(".form").append(newTextInput.element);
-
-class CheckBoxElement extends FormElement {
-    constructor({type, checked}) {
+class CreateCheckboxElement extends FormElement {
+    constructor({ type, checked }) {
         super(type);
-        this.type = "checkbox";
+        this.type = type;
         this.checked = checked;
     }
-
     createCheckBox() {
-        this._el = document.createElement("input");
-        this._el.setAttribute("type", this.type);
-        this._el.checked = this.checked;
+        this.element = document.createElement("input");
+        this.element.setAttribute("type", this.type);
+        this.element.checked = this.checked;
     }
 }
 
-const newCheckBox = new CheckBoxElement({
-    checked: false
-})
-newCheckBox.createCheckBox();
-document.querySelector(".form").append(newCheckBox._el);
-
-class ButtonElement extends FormElement {
-    constructor({text}) {
+class CreateButtonElement extends FormElement {
+    constructor({ text }) {
         super({});
         this.text = text;
     }
-
-    createButton() {
-        this._el = document.createElement("button");
-        this._el.innerText = this.text;
+    createButoon() {
+        this.element = document.createElement("button");
+        this.element.innerText = `${this.text}`;
     }
 }
 
-const newButton = new ButtonElement({
-    text: "Register"
+const textInput = new CreateTextElement({
+    placeholder: "Text",
+    type: "text",
+    name: "userName",
+});
+
+const textInputMail = new CreateTextElement({
+    placeholder: "Email",
+    type: "text",
+    name : "email"
 })
-newButton.createButton();
-document.querySelector(".form").appendChild(newButton._el);
+
+const textInputPassword = new CreateTextElement({
+    placeholder : "Password",
+    type: "password",
+    name: "password"
+});
+
+const textInputPasswordRepeat = new CreateTextElement({
+    placeholder : "Repeat password",
+    type: "password",
+    name: "password"
+})
+
+const checkBox = new CreateCheckboxElement({
+    type: "checkbox",
+    checked: false,
+});
+
+const button = new CreateButtonElement({
+    text: "кнопка",
+});
+
+textInput.createInput();
+textInputMail.createInput();
+textInputPassword.createInput();
+textInputPasswordRepeat.createInput();
+checkBox.createCheckBox();
+button.createButoon();
+
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend", textInput.element);
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend", textInputMail.element);
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend",textInputPassword.element);
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend",textInputPasswordRepeat.element);
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend", checkBox.element);
+document
+    .querySelector(".form")
+    .insertAdjacentElement("beforeend", button.element);
